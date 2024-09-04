@@ -3,6 +3,7 @@
 #include <sstream>  // For std::istringstream
 #include <string>
 #include "linkedList.hpp"
+#include <cctype>
 
 using namespace std;
 
@@ -25,12 +26,22 @@ void readDataFile(ifstream &file, string &streetName, int &dataValue) {
     }
 }
 
-int main() {
+void processLine(const std::string& line) {
+    std::istringstream iss(line);
+    std::string checkVal;
+    
+    while (iss >> checkVal) {
+        // Check if the token is a number
+        if (isdigit(checkVal[0])) {
+            cout << checkVal << " is a digit" << std::endl;
+        } else {
+            cout << checkVal << " is a string" << std::endl;
+        }
+    }
+}
 
-    linkedList Indiana;
-    Indiana.insert(11);
-    Indiana.insert(15);
-    Indiana.printList();
+
+int main() {
 
     // Open the file
     ifstream file("TreeData.dat");
@@ -49,6 +60,7 @@ int main() {
         cout << "No street name found." << endl;
     }
     
+    linkedList Indiana;
     Indiana.insert(dataValue);
     Indiana.printList();
 

@@ -22,6 +22,7 @@ void linkedList::insert(int value) {
 }
 
 // Print the list from the beginning
+//(not the way I was taught but it works)
 void linkedList::printList() const {
     Node* current = head;
     while (current != nullptr) {
