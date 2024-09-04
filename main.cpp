@@ -7,6 +7,8 @@
 
 using namespace std;
 
+void processLine(const std::string& line);
+
 // Function to read and parse data from the file
 void readDataFile(ifstream &file, string &streetName, int &dataValue) {
     // Check if the file is open before attempting to read
@@ -16,11 +18,10 @@ void readDataFile(ifstream &file, string &streetName, int &dataValue) {
     }
 
     string line;
+
     if (getline(file, line)) {  // Read a line from the file
-        istringstream iss(line);  // Create a string stream to parse the line
-        if (!(iss >> streetName >> dataValue)) {  // Extract street name and integer value
-            cerr << "Error parsing line: " << line << endl;
-        }
+        cout << "Line Process Step" << endl;
+        processLine(line);
     } else {
         cerr << "Error reading line from file." << endl;
     }
