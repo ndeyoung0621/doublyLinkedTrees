@@ -1,16 +1,14 @@
 #include <iostream>
 #include <fstream>
-#include <sstream>  // For std::istringstream
+#include <sstream>
 #include <string>
+#include <map>
 #include "linkedList.hpp"
-#include <cctype> // For std:isdigit()
+#include <cctype> // For std::isdigit()
 
 using namespace std;
 
-//Having all nonspecific helper files in main is not best practice but is in place
-//for this project due to three allocated files and naming conventions being forced
-
-// Function to check if a string is a number
+// Helper function to check if a string is a number
 bool isNumber(const std::string& str) {
     for (char c : str) {
         if (!isdigit(c)) {
@@ -20,42 +18,49 @@ bool isNumber(const std::string& str) {
     return true;
 }
 
-// Function to check if a specific string is present in the line
-bool containsString(const std::string& line, const std::string& searchStr) {
-    return line.find(searchStr) != std::string::npos;
+// Function to get the street name from a line (assuming it's the first word)
+std::string getStreetName(const std::string& line) {
+    istringstream iss(line);
+    std::string streetName;
+    iss >> streetName; // Extract the first word as the street name
+    return streetName;
 }
 
-// Function to process each line
+// Function to process each line and add numbers to the appropriate linkedList
 void processLine(const std::string& line, linkedList& dataList) {
-    std::istringstream iss(line);
+    istringstream iss(line);
     std::string token;
 
-    // Extract numbers and add them to the linkedList
+    // Process the line to extract and insert numbers into the linked list
     while (iss >> token) {
         if (isNumber(token)) {
             int number = std::stoi(token); // Convert string to integer
-            dataList.insert(number); 
-        } 
+            dataList.insert(number);       // Insert into linked list
+        }
     }
-    cout << "numbers should be added" << endl;
 }
 
-// Function to read and parse data from the file
-void writeDataFile(ifstream &file, linkedList &streetData) {
-    // Check if the file is open before attempting to read
+// Function to read and process data from the file
+void writeDataFile(std::ifstream& file, std::map<std::string, linkedList>& linkedLists) {
     if (!file.is_open()) {
         cerr << "File is not open!" << endl;
         return;
     }
 
-    string line;
+    std::string line;
+    while (getline(file, line)) {
+        std::string streetName = getStreetName(line);
 
-    while(getline(file, line)) {  // Read a line from the file
-            cout << "Line Process Step" << endl;
-            processLine(line, streetData);
+        // Check if the linkedList for this street already exists, if not create one
+        if (linkedLists.find(streetName) == linkedLists.end()) {
+            cout << "Creating linkedList for street: " << streetName << endl;
+            linkedLists[streetName] = linkedList(); // Create and store new linkedList
+        }
+
+        // Process the line and add numbers to the linkedList associated with the street
+        processLine(line, linkedLists[streetName]);
     }
 }
-
 
 // Function to check if a string is valid (contains only alphabetic characters and spaces)
 bool isValidStreetName(const std::string& str) {
@@ -67,17 +72,18 @@ bool isValidStreetName(const std::string& str) {
     return true;
 }
 
-string userInteractionLoop() {
+// User interaction loop for selecting a street name
+std::string userInteractionLoop() {
     std::string choice;
     bool validInput = false;
 
     while (!validInput) {
-        cout << "Which street would you like to view the data on? \nEnter a full street name: ";
+        cout << "Which street would you like to view the data on? \nEnter a full lowercase street name: ";
         std::getline(cin, choice);
 
         // Check if the input is a valid street name
         if (choice.empty() || !isValidStreetName(choice)) {
-            cout << "Invalid input. Please enter a valid street name containing only alphabetic characters and spaces." << endl;
+            cout << "Invalid input. Please enter a valid street name containing only lowercase alphabetic characters." << endl;
         } else {
             validInput = true;
             cout << "You chose: " << choice << endl;
@@ -88,20 +94,28 @@ string userInteractionLoop() {
 }
 
 int main() {
-
+    // User selects the street to view
     string userChoice = userInteractionLoop();
 
-    linkedList Indiana;
-    
+    // Map to store linkedList objects for each street
+    std::map<std::string, linkedList> linkedLists;
+
     // Open the file
     ifstream file("TreeData.dat");
 
-    // Read and parse the data from the file
-    writeDataFile(file, Indiana);
-    Indiana.printList();
-    
-    // Close the file
+    // Read and parse the data from the file into the map
+    writeDataFile(file, linkedLists);
+
+    // Close the file after processing
     file.close();
+
+    // Print the data from the selected street, if it exists
+    if (linkedLists.find(userChoice) != linkedLists.end()) {
+        cout << "Data for " << userChoice << ":" << endl;
+        linkedLists[userChoice].printList(); // Assuming printList is a method in your linkedList class
+    } else {
+        cout << "No data found for the selected street: " << userChoice << endl;
+    }
 
     return 0;
 }
