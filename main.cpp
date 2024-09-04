@@ -7,6 +7,9 @@
 
 using namespace std;
 
+//Having all nonspecific helper files in main is not best practice but is in place
+//for this project due to three allocated files and naming conventions being forced
+
 // Function to check if a string is a number
 bool isNumber(const std::string& str) {
     for (char c : str) {
@@ -62,7 +65,31 @@ void readDataFile(ifstream &file, string &streetName, linkedList &streetData) {
     }
 }
 
+char userInteractionLoop() {
+    char choice;
+    bool validInput = false;
+
+    while (!validInput) {
+        cout << "Which street would you like to view the data on? \nEnter a single letter: ";
+        cin >> choice;
+
+        // Check if input is a single letter
+        if (cin.fail() || !isalpha(choice) || cin.get() != '\n') {
+            cin.clear(); // Clear the error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // Discard invalid input
+            cout << "Invalid input. Please enter a single letter." << endl;
+        } else {
+            validInput = true;
+            cout << "You chose: " << choice << endl;
+        }
+    }
+
+    return choice;
+}
+
 int main() {
+
+    userInteractionLoop();
 
     linkedList Indiana;
     // Open the file
@@ -77,8 +104,7 @@ int main() {
     // Output the results
     if (!streetName.empty()) {
         cout << "Street Name: " << streetName << endl;
-        // Checking list contents
-        Indiana.printList();
+        
     } else {
         cout << "No street name found." << endl;
     }
