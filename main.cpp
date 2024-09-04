@@ -93,6 +93,7 @@ std::string userInteractionLoop() {
     return choice;
 }
 
+
 int main() {
     // User selects the street to view
     string userChoice = userInteractionLoop();
