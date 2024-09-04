@@ -26,24 +26,22 @@ bool containsString(const std::string& line, const std::string& searchStr) {
 }
 
 // Function to process each line
-void processLine(const std::string& line, string& streetName, linkedList& dataList) {
+void processLine(const std::string& line, linkedList& dataList) {
     std::istringstream iss(line);
     std::string token;
-
-    cout << "Street Name: " << streetName << endl;
 
     // Extract numbers and add them to the linkedList
     while (iss >> token) {
         if (isNumber(token)) {
             int number = std::stoi(token); // Convert string to integer
             dataList.insert(number); 
-            cout << "Number added: " << number << " to Street: " << streetName << endl;
         } 
     }
+    cout << "numbers should be added" << endl;
 }
 
 // Function to read and parse data from the file
-void readDataFile(ifstream &file, string &streetName, linkedList &streetData) {
+void writeDataFile(ifstream &file, linkedList &streetData) {
     // Check if the file is open before attempting to read
     if (!file.is_open()) {
         cerr << "File is not open!" << endl;
@@ -53,12 +51,11 @@ void readDataFile(ifstream &file, string &streetName, linkedList &streetData) {
     string line;
 
     while(getline(file, line)) {  // Read a line from the file
-        if(containsString(line, streetName)) {
             cout << "Line Process Step" << endl;
-            processLine(line, streetName, streetData);
-        }
+            processLine(line, streetData);
     }
 }
+
 
 // Function to check if a string is valid (contains only alphabetic characters and spaces)
 bool isValidStreetName(const std::string& str) {
@@ -100,7 +97,8 @@ int main() {
     ifstream file("TreeData.dat");
 
     // Read and parse the data from the file
-    readDataFile(file, userChoice, Indiana);
+    writeDataFile(file, Indiana);
+    Indiana.printList();
     
     // Close the file
     file.close();
