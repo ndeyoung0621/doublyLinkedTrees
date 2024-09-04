@@ -8,7 +8,7 @@ CXXFLAGS = -Wall -std=c++11
 TARGET = my_program
 
 # Source files
-SRCS = main.cpp
+SRCS = main.cpp linkedList.cpp
 
 # Object files
 OBJS = $(SRCS:.cpp=.o)

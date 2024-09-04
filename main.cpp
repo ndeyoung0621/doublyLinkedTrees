@@ -26,6 +26,12 @@ void readDataFile(ifstream &file, string &streetName, int &dataValue) {
 }
 
 int main() {
+
+    linkedList Indiana;
+    Indiana.insert(11);
+    Indiana.insert(15);
+    Indiana.printList();
+
     // Open the file
     ifstream file("TreeData.dat");
 
@@ -42,7 +48,9 @@ int main() {
     } else {
         cout << "No street name found." << endl;
     }
-    cout << "Data Value: " << dataValue << endl;
+    
+    Indiana.insert(dataValue);
+    Indiana.printList();
 
     // Close the file
     file.close();

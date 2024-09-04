@@ -3,7 +3,7 @@
 
 using namespace std;
 
-linkedList::linkedList() : head(nullptr), tail(nullptr) {}
+linkedList::linkedList() noexcept : head(nullptr), tail(nullptr) {}
 
 // Insert at the front
 void linkedList::insert(int value) {

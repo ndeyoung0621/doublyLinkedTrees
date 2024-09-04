@@ -1,5 +1,5 @@
 #ifndef linkedList_h
-#define linkedList_ho
+#define linkedList_h
 
 struct Node  {
 //Defining a "node", a node has data (trees), a pointer to the next node and a pointer to the previous node
@@ -19,7 +19,8 @@ class linkedList {
         Node* tail;
     public:
 
-    void insert (int value);
+    linkedList() noexcept;
+    void insert(int value);
     void printList () const;
 
 };
