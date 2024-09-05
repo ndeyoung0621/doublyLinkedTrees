@@ -82,7 +82,7 @@ std::string userInteractionLoop() {
     bool validInput = false;
 
     while (!validInput) {
-        cout << "Which street would you like to view the data on? \nEnter a full lowercase street name: ";
+        cout << "Which street would you like to view the data on? Type \"exit\" at any time to quit the program. \nEnter a full lowercase street name: ";
         std::getline(cin, choice);
 
         // Check if the input is a valid street name
@@ -99,8 +99,6 @@ std::string userInteractionLoop() {
 
 
 int main() {
-    // User selects the street to view
-    string userChoice = userInteractionLoop();
 
     // Map to store linkedList objects for each street
     std::map<std::string, linkedList> linkedLists;
@@ -114,12 +112,22 @@ int main() {
     // Close the file after processing
     file.close();
 
-    // Print the data from the selected street, if it exists
-    if (linkedLists.find(userChoice) != linkedLists.end()) {
-        cout << "Data for " << userChoice << ":" << endl;
-        linkedLists[userChoice].printList(); // Assuming printList is a method in your linkedList class
-    } else {
-        cout << "No data found for the selected street: " << userChoice << endl;
+    bool running = true;
+
+    //infinite loop to run until program is manually quit
+    while(running) {
+        // User selects the street to view
+        string userChoice = userInteractionLoop();
+
+        // Print the data from the selected street, if it exists
+        if (userChoice == "exit" || userChoice == "Exit") {
+            running = false;
+        } else if (linkedLists.find(userChoice) != linkedLists.end()) {
+            cout << "Data for " << userChoice << ":" << endl;
+            linkedLists[userChoice].printList(); // Assuming printList is a method in your linkedList class
+        } else {
+            cout << "No data found for the selected street: " << userChoice << endl;
+        }
     }
 
     return 0;
