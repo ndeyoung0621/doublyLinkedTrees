@@ -6,6 +6,10 @@
 #include "linkedList.hpp"
 #include <cctype> // For std::isdigit()
 
+//note: ranged based for loops are an extension from the stdlib,
+//they are in place for simplicity but should an error arise,
+//current version is -Wc++11-ext
+
 using namespace std;
 
 // Helper function to check if a string is a number
