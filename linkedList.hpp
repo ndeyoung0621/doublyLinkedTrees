@@ -6,8 +6,8 @@ struct Node  {
     int data;
     Node* prev;
     Node* next;
-
-    Node(int val) : data(val), prev(nullptr), next(nullptr) {}
+    int size;
+    Node(int val) : data(val), prev(nullptr), next(nullptr), size(val) {}
 
 };
 
@@ -17,9 +17,11 @@ class linkedList {
         Node* head;
         Node* tail;
     public:
+        int size;
         linkedList() noexcept;
         void insert(int value);
         void printList () const;
+        int getSize() const;
 };
 
 #endif

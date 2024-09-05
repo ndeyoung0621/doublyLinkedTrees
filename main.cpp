@@ -13,7 +13,7 @@
 using namespace std;
 
 // Helper function to check if a string is a number
-bool isNumber(const std::string& str) {
+bool isNumber(const string& str) {
     for (char c : str) {
         if (!isdigit(c)) {
             return false;
@@ -23,37 +23,37 @@ bool isNumber(const std::string& str) {
 }
 
 // Function to get the street name from a line (assuming it's the first word)
-std::string getStreetName(const std::string& line) {
+string getStreetName(const string& line) {
     istringstream iss(line);
-    std::string streetName;
+    string streetName;
     iss >> streetName; // Extract the first word as the street name
     return streetName;
 }
 
 // Function to process each line and add numbers to the appropriate linkedList
-void processLine(const std::string& line, linkedList& dataList) {
+void processLine(const string& line, linkedList& dataList) {
     istringstream iss(line);
-    std::string token;
+    string token;
 
     // Process the line to extract and insert numbers into the linked list
     while (iss >> token) {
         if (isNumber(token)) {
-            int number = std::stoi(token); // Convert string to integer
+            int number = stoi(token); // Convert string to integer
             dataList.insert(number);       // Insert into linked list
         }
     }
 }
 
 // Function to read and process data from the file
-void writeDataFile(std::ifstream& file, std::map<std::string, linkedList>& linkedLists) {
+void writeDataFile(ifstream& file, map<string, linkedList>& linkedLists) {
     if (!file.is_open()) {
         cerr << "File is not open!" << endl;
         return;
     }
 
-    std::string line;
+    string line;
     while (getline(file, line)) {
-        std::string streetName = getStreetName(line);
+        string streetName = getStreetName(line);
 
         // Check if the linkedList for this street already exists, if not create one
         if (linkedLists.find(streetName) == linkedLists.end()) {
@@ -67,9 +67,9 @@ void writeDataFile(std::ifstream& file, std::map<std::string, linkedList>& linke
 }
 
 // Function to check if a string is valid (contains only alphabetic characters and spaces)
-bool isValidStreetName(const std::string& str) {
+bool isValidStreetName(const string& str) {
     for (char c : str) {
-        if (!std::isalpha(c) && !std::isspace(c)) {
+        if (!isalpha(c) && !isspace(c)) {
             return false;
         }
     }
@@ -77,13 +77,13 @@ bool isValidStreetName(const std::string& str) {
 }
 
 // User interaction loop for selecting a street name
-std::string userInteractionLoop() {
-    std::string choice;
+string userInteractionLoop() {
+    string choice;
     bool validInput = false;
 
     while (!validInput) {
         cout << "Which street would you like to view the data on? Type \"exit\" at any time to quit the program. \nEnter a full lowercase street name: ";
-        std::getline(cin, choice);
+        getline(cin, choice);
 
         // Check if the input is a valid street name
         if (choice.empty() || !isValidStreetName(choice)) {
@@ -101,7 +101,7 @@ std::string userInteractionLoop() {
 int main() {
 
     // Map to store linkedList objects for each street
-    std::map<std::string, linkedList> linkedLists;
+    map<string, linkedList> linkedLists;
 
     // Open the file
     ifstream file("TreeData.dat");
@@ -129,6 +129,6 @@ int main() {
             cout << "No data found for the selected street: " << userChoice << endl;
         }
     }
-
+    
     return 0;
 }

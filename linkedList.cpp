@@ -19,6 +19,11 @@ void linkedList::insert(int value) {
         head->prev = newNode;
         head = newNode;
     }
+    size++;
+}
+
+int linkedList::getSize() const {
+    return size;
 }
 
 // Print the list from the beginning
