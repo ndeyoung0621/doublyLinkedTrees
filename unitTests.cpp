@@ -2,22 +2,24 @@
 #include <cassert>
 #include "linkedList.hpp"
 
+using namespace std;
+
 // Define a macro to simplify the test assertions
+// I am done trying to make stupid GTEST work
 #define ASSERT_EQ(expected, actual) \
     do { \
         if ((expected) != (actual)) { \
-            std::cerr << "Assertion failed: (" << #expected << " == " << #actual << ") " \
-                      << "at " << __FILE__ << ":" << __LINE__ << std::endl; \
-            std::cerr << "  Expected: " << (expected) << std::endl; \
-            std::cerr << "  Actual: " << (actual) << std::endl; \
-            std::exit(EXIT_FAILURE); \
+            cerr << "Assertion failed: (" << #expected << " == " << #actual << ") " \
+                      << "at " << __FILE__ << ":" << __LINE__ << endl; \
+            cerr << "  Expected: " << (expected) << endl; \
+            cerr << "  Actual: " << (actual) << endl; \
+            exit(EXIT_FAILURE); \
         } \
     } while (0)
 
 // Example test functions
 void testInsert() {
     // Example list
-    // Assuming you have a `DoublyLinkedList` class with an `append` method and `getSize` method
     linkedList list;
     list.insert(1);
     list.insert(2);
@@ -26,10 +28,21 @@ void testInsert() {
     ASSERT_EQ(3, list.getSize());  // Test case
 }
 
+void testLinkedValues() {
+    // Example list
+    linkedList list;
+    list.insert(69);
+    list.insert(6969);
+    list.insert(696969);
+
+    ASSERT_EQ(6969, list.getSecondValue());
+}
+
 int main() {
     // Run tests
     testInsert();
+    testLinkedValues();
 
-    std::cout << "All tests passed!" << std::endl;
+    cout << "All tests passed!" << endl;
     return 0;
 }

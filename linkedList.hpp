@@ -6,7 +6,7 @@ struct Node  {
     int data;
     Node* prev;
     Node* next;
-    int size;
+    int size = 0;
     Node(int val) : data(val), prev(nullptr), next(nullptr), size(val) {}
 
 };
@@ -22,6 +22,7 @@ class linkedList {
         void insert(int value);
         void printList () const;
         int getSize() const;
+        int getSecondValue() const;
 };
 
 #endif

@@ -3,7 +3,7 @@
 
 using namespace std;
 
-linkedList::linkedList() noexcept : head(nullptr), tail(nullptr) {}
+linkedList::linkedList() noexcept : head(nullptr), tail(nullptr), size(0) {}
 
 // Insert at the front
 void linkedList::insert(int value) {
@@ -19,11 +19,20 @@ void linkedList::insert(int value) {
         head->prev = newNode;
         head = newNode;
     }
-    size++;
+    ++size;
 }
 
+//purely for testing purposes
 int linkedList::getSize() const {
     return size;
+}
+
+int linkedList::getSecondValue() const {
+    if(head && head->next) {
+        return head->next->data;
+    } else {
+        return 0;
+    }
 }
 
 // Print the list from the beginning
