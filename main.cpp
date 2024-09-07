@@ -8,7 +8,7 @@
 
 //note: ranged based for loops are an extension from the stdlib,
 //they are in place for simplicity but should an error arise,
-//current version is -Wc++11-ext
+//current version of c++ is -Wc++14
 
 using namespace std;
 
@@ -26,7 +26,8 @@ bool isNumber(const string& str) {
 string getStreetName(const string& line) {
     istringstream iss(line);
     string streetName;
-    iss >> streetName; // Extract the first word as the street name
+    //instead of using a checker this function assumes the street name is the first item in the string stream
+    iss >> streetName; // Extract the first word as the street name, 
     return streetName;
 }
 
@@ -39,7 +40,7 @@ void processLine(const string& line, linkedList& dataList) {
     while (iss >> token) {
         if (isNumber(token)) {
             int number = stoi(token); // Convert string to integer
-            dataList.insert(number);       // Insert into linked list
+            dataList.insert(number);  // Insert into linked list
         }
     }
 }
@@ -129,6 +130,6 @@ int main() {
             cout << "No data found for the selected street: " << userChoice << endl;
         }
     }
-    
+
     return 0;
 }

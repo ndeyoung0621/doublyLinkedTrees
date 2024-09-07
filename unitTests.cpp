@@ -17,7 +17,7 @@ using namespace std;
         } \
     } while (0)
 
-// Example test functions
+
 void testInsert() {
     // Example list
     linkedList list;
@@ -25,9 +25,10 @@ void testInsert() {
     list.insert(2);
     list.insert(3);
 
-    ASSERT_EQ(3, list.getSize());  // Test case
+    ASSERT_EQ(3, list.getSize());  
 }
 
+// Test if the values inserted are in the right place (they are not)
 void testLinkedValues() {
     // Example list
     linkedList list;
@@ -35,7 +36,7 @@ void testLinkedValues() {
     list.insert(6969);
     list.insert(696969);
 
-    ASSERT_EQ(6969, list.getSecondValue());
+    ASSERT_EQ(696969, list.getThirdValue());
 }
 
 int main() {

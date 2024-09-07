@@ -20,9 +20,10 @@ class linkedList {
         int size;
         linkedList() noexcept;
         void insert(int value);
-        void printList () const;
+        void printList() const;
+        void deleteNode(Node* nodeToDelete);
         int getSize() const;
-        int getSecondValue() const;
+        int getThirdValue() const;
 };
 
 #endif

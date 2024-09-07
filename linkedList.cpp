@@ -10,7 +10,7 @@ void linkedList::insert(int value) {
     Node* newNode = new Node(value);
 
     //As I understand it, if this is the only thing in the list besides head,
-    //give this new node all the rights from the previous nodes, otherwise,
+    //give this new node all the rights of all nodes, otherwise,
     //keep head at the front but "push" everything else back 
     if (head == nullptr) {
         head = tail = newNode;
@@ -22,14 +22,15 @@ void linkedList::insert(int value) {
     ++size;
 }
 
+
 //purely for testing purposes
 int linkedList::getSize() const {
     return size;
 }
 
-int linkedList::getSecondValue() const {
+int linkedList::getThirdValue() const {
     if(head && head->next) {
-        return head->next->data;
+        return head->next->next->data;
     } else {
         return 0;
     }
