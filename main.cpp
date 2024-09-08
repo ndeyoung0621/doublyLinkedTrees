@@ -6,10 +6,6 @@
 #include "linkedList.hpp"
 #include <cctype> // For std::isdigit()
 
-//note: ranged based for loops are an extension from the stdlib,
-//they are in place for simplicity but should an error arise,
-//current version of c++ is -Wc++14
-
 using namespace std;
 
 // Helper function to check if a string is a number
@@ -26,8 +22,7 @@ bool isNumber(const string& str) {
 string getStreetName(const string& line) {
     istringstream iss(line);
     string streetName;
-    //instead of using a checker this function assumes the street name is the first item in the string stream
-    iss >> streetName; // Extract the first word as the street name, 
+    iss >> streetName; // Extract the first word as the street name
     return streetName;
 }
 
@@ -36,7 +31,6 @@ void processLine(const string& line, linkedList& dataList) {
     istringstream iss(line);
     string token;
 
-    // Process the line to extract and insert numbers into the linked list
     while (iss >> token) {
         if (isNumber(token)) {
             int number = stoi(token); // Convert string to integer
@@ -77,70 +71,54 @@ bool isValidStreetName(const string& str) {
     return true;
 }
 
-// User interaction loop for selecting a street name
-string userInteractionLoop() {
-    string choice;
-
-    // Ask the user for a street name
-    cout << "Which street would you like to view the data on? Type \"exit\" at any time to quit the program. \nEnter a full lowercase street name: ";
-    getline(cin, choice);
-
-    return choice;
-}
-
-int main() {
-    // Map to store linkedList objects for each street
-    map<string, linkedList> linkedLists;
-
-    // Open the file
-    ifstream file("TreeData.dat");
-
-    // Read and parse the data from the file into the map
-    writeDataFile(file, linkedLists);
-
-    // Close the file after processing
-    file.close();
-
+// User interaction loop function
+void userInteractionLoop(map<string, linkedList>& linkedLists) {
     bool running = true;
 
-    // Infinite loop to run until the program is manually quit
     while (running) {
-        // User selects the street to view
-        string userChoice = userInteractionLoop();
+        // Ask the user for a street name
+        string choice;
+        cout << "Which street would you like to view the data on? Type \"exit\" at any time to quit the program. \nEnter a full lowercase street name: ";
+        getline(cin, choice);
 
-        // Check if the user wants to exit
-        if (userChoice == "exit" || userChoice == "Exit") {
+        if (choice == "exit" || choice == "Exit") {
             running = false;
             cout << "Exiting program." << endl;
 
-        // Check if the street exists in the map
-        } else if (linkedLists.find(userChoice) != linkedLists.end()) {
-            cout << "Data for " << userChoice << ":" << endl;
+        } else if (linkedLists.find(choice) != linkedLists.end()) {
+            cout << "Data for " << choice << ":" << endl;
+            linkedLists[choice].printList();  
 
-            // Print the list of data for the selected street
-            linkedLists[userChoice].printList();  
-
-            // Ask if the user wants to traverse the list
             string navigateChoice;
-            cout << "Would you like to traverse through the blocks of " << userChoice << "? (y/n): ";
+            cout << "Would you like to traverse through the blocks of " << choice << "? (y/n): ";
             cin >> navigateChoice;
             cin.ignore();  // Clear newline after 'cin'
 
-            // Cout to confirm user choice
             cout << "User chose: " << navigateChoice << endl;
 
             if (navigateChoice == "y" || navigateChoice == "Y") {
                 cout << "Starting traversal..." << endl;
-                linkedLists[userChoice].navigateList();  // Call navigateList to traverse the blocks
+                linkedLists[choice].navigateList();  // Call navigateList to traverse the blocks
             } else {
                 cout << "Not traversing the list." << endl;
             }
 
-        // Handle case when no data exists for the selected street
         } else {
-            cout << "No data found for the selected street: " << userChoice << endl;
-        } 
+            cout << "No data found for the selected street: " << choice << endl;
+        }
     }
+}
+
+int main() {
+    map<string, linkedList> linkedLists;
+
+    ifstream file("TreeData.dat");
+
+    writeDataFile(file, linkedLists);
+
+    file.close();
+
+    userInteractionLoop(linkedLists);
 
     return 0;
 }
