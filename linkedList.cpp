@@ -46,3 +46,48 @@ void linkedList::printList() const {
     }
     cout << endl;
 }
+
+void linkedList::navigateList() const {
+    cout << "Navigate List is called\n";
+    //Check to make sure list has data 
+    if (!head) {
+        cout << "The list is empty." << endl;
+        return;
+    }
+
+    Node* current = head;
+    int blockNumber = 1;
+    string choice;
+
+    while (current != nullptr) {
+        // Display current block information
+        cout << "Block " << blockNumber << " has " << current->data << " trees." << endl;
+
+        // Ask the user if they want to move forward or backward
+        cout << "Enter 'forward' to move to the next block, 'back' to move to the previous block, or 'exit' to stop: ";
+        cin >> choice;
+
+        if (choice == "forward") {
+            if (current->next) {
+                current = current->next;
+                ++blockNumber;
+            } else {
+                cout << "You are at the last block." << endl;
+            }
+        } else if (choice == "back") {
+            if (current->prev) {
+                current = current->prev;
+                --blockNumber;
+            } else {
+                cout << "You are at the first block." << endl;
+            }
+        } else if (choice == "exit") {
+            break;
+        } else {
+            cout << "Invalid input. Please enter 'forward', 'back', or 'exit'." << endl;
+        }
+    }
+
+    cout << "Traversal finished." << endl;
+}
+

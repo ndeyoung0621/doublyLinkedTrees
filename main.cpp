@@ -20,7 +20,7 @@ bool isNumber(const string& str) {
         }
     }
     return true;
-}
+} 
 
 // Function to get the street name from a line (assuming it's the first word)
 string getStreetName(const string& line) {
@@ -80,27 +80,15 @@ bool isValidStreetName(const string& str) {
 // User interaction loop for selecting a street name
 string userInteractionLoop() {
     string choice;
-    bool validInput = false;
 
-    while (!validInput) {
-        cout << "Which street would you like to view the data on? Type \"exit\" at any time to quit the program. \nEnter a full lowercase street name: ";
-        getline(cin, choice);
-
-        // Check if the input is a valid street name
-        if (choice.empty() || !isValidStreetName(choice)) {
-            cout << "Invalid input. Please enter a valid street name containing only lowercase alphabetic characters." << endl;
-        } else {
-            validInput = true;
-            cout << "You chose: " << choice << endl;
-        }
-    }
+    // Ask the user for a street name
+    cout << "Which street would you like to view the data on? Type \"exit\" at any time to quit the program. \nEnter a full lowercase street name: ";
+    getline(cin, choice);
 
     return choice;
 }
 
-
 int main() {
-
     // Map to store linkedList objects for each street
     map<string, linkedList> linkedLists;
 
@@ -115,20 +103,43 @@ int main() {
 
     bool running = true;
 
-    //infinite loop to run until program is manually quit
-    while(running) {
+    // Infinite loop to run until the program is manually quit
+    while (running) {
         // User selects the street to view
         string userChoice = userInteractionLoop();
 
-        // Print the data from the selected street, if it exists
+        // Check if the user wants to exit
         if (userChoice == "exit" || userChoice == "Exit") {
             running = false;
+            cout << "Exiting program." << endl;
+
+        // Check if the street exists in the map
         } else if (linkedLists.find(userChoice) != linkedLists.end()) {
             cout << "Data for " << userChoice << ":" << endl;
-            linkedLists[userChoice].printList(); // Assuming printList is a method in your linkedList class
+
+            // Print the list of data for the selected street
+            linkedLists[userChoice].printList();  
+
+            // Ask if the user wants to traverse the list
+            string navigateChoice;
+            cout << "Would you like to traverse through the blocks of " << userChoice << "? (y/n): ";
+            cin >> navigateChoice;
+            cin.ignore();  // Clear newline after 'cin'
+
+            // Cout to confirm user choice
+            cout << "User chose: " << navigateChoice << endl;
+
+            if (navigateChoice == "y" || navigateChoice == "Y") {
+                cout << "Starting traversal..." << endl;
+                linkedLists[userChoice].navigateList();  // Call navigateList to traverse the blocks
+            } else {
+                cout << "Not traversing the list." << endl;
+            }
+
+        // Handle case when no data exists for the selected street
         } else {
             cout << "No data found for the selected street: " << userChoice << endl;
-        }
+        } 
     }
 
     return 0;
