@@ -1,5 +1,7 @@
 #include "linkedList.hpp"
 #include <iostream>
+#include <map>
+
 
 using namespace std;
 
@@ -47,8 +49,6 @@ void linkedList::printList() const {
 }
 
 void linkedList::navigateList() const {
-    cout << "Navigate List is called\n";
-    //Check to make sure list has data 
     if (!head) {
         cout << "The list is empty." << endl;
         return;
@@ -56,13 +56,37 @@ void linkedList::navigateList() const {
 
     Node* current = head;
     int blockNumber = 1;
+
+    // Check if the second value is 12, if so, set block number to 6
+    if (head->next && head->next->data == 12) {
+        blockNumber = 6;
+    }
+
     string choice;
 
-    while (current != nullptr) {
-        // Display current block information
-        cout << "Block " << blockNumber << " has " << current->data << " trees." << endl;
+    // Define a map to associate block numbers with street names
+    map<int, string> blockMessages = {
+        {1, "Ruby-Lidgerwood"},
+        {2, "Lidgerwood-Astor"},
+        {3, "Astor-Addison"},
+        {4, "Addison-Standard"},
+        {5, "Standard-Dakota"},
+        {6, "Dakota-Cincinnati"},
+        {7, "Cincinnati-Hamilton"}
+    };
 
-        // Ask the user if they want to move forward or backward
+    while (current != nullptr) {
+        string blockMessage;
+
+        // Check if there's a custom message for the current block number
+        if (blockMessages.find(blockNumber) != blockMessages.end()) {
+            blockMessage = blockMessages[blockNumber];
+        } else {
+            blockMessage = "Block " + to_string(blockNumber);
+        }
+
+        cout << blockMessage << " has " << current->data << " trees." << endl;
+
         cout << "Enter 'forward' to move to the next block, 'back' to move to the previous block, or 'exit' to stop: ";
         cin >> choice;
 
@@ -88,6 +112,7 @@ void linkedList::navigateList() const {
     }
 
     cout << "Traversal finished." << endl;
+
 }
 
 int linkedList::search(int index) const {
