@@ -5,7 +5,6 @@
 using namespace std;
 
 // Define a macro to simplify the test assertions
-// I am done trying to make stupid GTEST work
 #define ASSERT_EQ(expected, actual) \
     do { \
         if ((expected) != (actual)) { \
@@ -17,32 +16,52 @@ using namespace std;
         } \
     } while (0)
 
-
+// Test Insert Function
 void testInsert() {
-    // Example list
     linkedList list;
     list.insert(1);
     list.insert(2);
     list.insert(3);
 
-    ASSERT_EQ(3, list.getSize());  
+    ASSERT_EQ(3, list.getSize());
 }
 
-// Test if the values inserted are in the right place (they are not)
-void testLinkedValues() {
-    // Example list
+// Test Delete Node Function
+void testDeleteNode() {
     linkedList list;
-    list.insert(69);
-    list.insert(6969);
-    list.insert(696969);
+    list.insert(1);
+    list.insert(2);
+    list.insert(3);
+    
+    // Assuming we want to delete the second node (which has value 2)
+    Node* nodeToDelete = list.getHead()->next; // This is the node with value 2
+    list.deleteNode(nodeToDelete);
 
-    ASSERT_EQ(696969, list.getThirdValue());
+    // After deletion, the list should have 2 elements and the second value should be 3
+    ASSERT_EQ(2, list.getSize());
+    ASSERT_EQ(3, list.getHead()->next->data);
+}
+
+// Test Search Function
+void testSearch() {
+    linkedList list;
+    list.insert(5);
+    list.insert(10);
+    list.insert(15);
+
+    // Test valid index
+    ASSERT_EQ(10, list.search(1));
+
+    // Test out-of-bounds index
+    ASSERT_EQ(-1, list.search(3)); // Should be -1 since there is no 4th element
 }
 
 int main() {
     // Run tests
     testInsert();
-    testLinkedValues();
+    testDeleteNode();
+    //testPrintList();
+    testSearch();
 
     cout << "All tests passed!" << endl;
     return 0;

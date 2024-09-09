@@ -141,3 +141,31 @@ int linkedList::search(int index) const {
 
     return -1; // Return -1 if something went wrong
 }
+
+void linkedList::deleteNode(Node* nodeToDelete) {
+    if (!nodeToDelete) {
+        return;
+    }
+    
+    // Adjust pointers
+    if (nodeToDelete == head) {
+        head = nodeToDelete->next;
+        if (head) {
+            head->prev = nullptr;
+        }
+    } else {
+        nodeToDelete->prev->next = nodeToDelete->next;
+    }
+    
+    if (nodeToDelete == tail) {
+        tail = nodeToDelete->prev;
+        if (tail) {
+            tail->next = nullptr;
+        }
+    } else {
+        nodeToDelete->next->prev = nodeToDelete->prev;
+    }
+    
+    delete nodeToDelete;
+    --size;
+}

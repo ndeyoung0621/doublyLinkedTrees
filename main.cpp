@@ -61,6 +61,7 @@ void writeFromDataFile(ifstream& file, map<string, linkedList>& linkedLists) {
     }
 }
 
+//method to write all of the mapped lists back to the data file after the program is done (all data entered)
 void writeBackToFile(const map<string, linkedList>& linkedLists, const string& filename) {
     ofstream file(filename);
 
@@ -93,6 +94,7 @@ bool isValidStreetName(const string& str) {
     return true;
 }
 
+//A loop that is always running until exited, handles user input
 void userInteractionLoop(map<string, linkedList>& linkedLists) {
     bool running = true;
 
@@ -154,6 +156,7 @@ void userInteractionLoop(map<string, linkedList>& linkedLists) {
     }
 }
 
+//structural proceedings
 int main() {
     map<string, linkedList> linkedLists;
 
