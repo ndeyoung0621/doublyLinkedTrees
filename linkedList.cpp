@@ -5,19 +5,18 @@ using namespace std;
 
 linkedList::linkedList() noexcept : head(nullptr), tail(nullptr), size(0) {}
 
-// Insert at the front
+//fixed insert function
 void linkedList::insert(int value) {
     Node* newNode = new Node(value);
 
-    //As I understand it, if this is the only thing in the list besides head,
-    //give this new node all the rights of all nodes, otherwise,
-    //keep head at the front but "push" everything else back 
-    if (head == nullptr) {
+    // If the list is empty, both head and tail should point to the new node
+    if (tail == nullptr) {
         head = tail = newNode;
     } else {
-        newNode->next = head;
-        head->prev = newNode;
-        head = newNode;
+        // Add the new node to the end of the list and update the tail
+        tail->next = newNode;
+        newNode->prev = tail;
+        tail = newNode;
     }
     ++size;
 }
@@ -91,3 +90,25 @@ void linkedList::navigateList() const {
     cout << "Traversal finished." << endl;
 }
 
+int linkedList::search(int index) const {
+    if (index < 0 || index >= size) {
+        cout << "Index out of bounds!" << endl;
+        return -1; // Return a sentinel value indicating an error
+    }
+
+    Node* current = head;
+    int currentIndex = 0;
+
+    // Traverse the list to find the node at the given index
+    while (current != nullptr && currentIndex < index) {
+        current = current->next;
+        ++currentIndex;
+    }
+
+    // If current is not null, return the data at that index
+    if (current != nullptr) {
+        return current->data;
+    }
+
+    return -1; // Return -1 if something went wrong
+}

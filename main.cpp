@@ -71,24 +71,25 @@ bool isValidStreetName(const string& str) {
     return true;
 }
 
-// User interaction loop function
 void userInteractionLoop(map<string, linkedList>& linkedLists) {
     bool running = true;
 
     while (running) {
         // Ask the user for a street name
         string choice;
-        cout << "Which street would you like to view the data on? Type \"exit\" at any time to quit the program. \nEnter a full lowercase street name: ";
+        cout << "Which street would you like to view? Type \"exit\" to quit the program or \"all\" to view all data. \nEnter a full lowercase street name: ";
         getline(cin, choice);
 
         if (choice == "exit" || choice == "Exit") {
             running = false;
             cout << "Exiting program." << endl;
-
+        } else if (choice == "all" || choice == "All") {
+            // Iterate over the map and print each street's linked list
+            for (const auto& entry : linkedLists) {
+                cout << "Street: " << entry.first << endl;
+                entry.second.printList();  // Print the linked list for the street
+            }
         } else if (linkedLists.find(choice) != linkedLists.end()) {
-            cout << "Data for " << choice << ":" << endl;
-            linkedLists[choice].printList();  
-
             string navigateChoice;
             cout << "Would you like to traverse through the blocks of " << choice << "? (y/n): ";
             cin >> navigateChoice;
@@ -102,7 +103,6 @@ void userInteractionLoop(map<string, linkedList>& linkedLists) {
             } else {
                 cout << "Not traversing the list." << endl;
             }
-
         } else {
             cout << "No data found for the selected street: " << choice << endl;
         }

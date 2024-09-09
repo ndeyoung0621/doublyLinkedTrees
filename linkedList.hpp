@@ -12,7 +12,6 @@ struct Node  {
 };
 
 class linkedList {
-//defines 
     private:
         Node* head;
         Node* tail;
@@ -25,6 +24,7 @@ class linkedList {
         int getSize() const;
         int getThirdValue() const;
         void navigateList() const;
+        int search(int index) const; // New search method
 }; 
 
 #endif
