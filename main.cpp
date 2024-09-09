@@ -40,7 +40,7 @@ void processLine(const string& line, linkedList& dataList) {
 }
 
 // Function to read and process data from the file
-void writeDataFile(ifstream& file, map<string, linkedList>& linkedLists) {
+void writeFromDataFile(ifstream& file, map<string, linkedList>& linkedLists) {
     if (!file.is_open()) {
         cerr << "File is not open!" << endl;
         return;
@@ -61,6 +61,28 @@ void writeDataFile(ifstream& file, map<string, linkedList>& linkedLists) {
     }
 }
 
+void writeBackToFile(const map<string, linkedList>& linkedLists, const string& filename) {
+    ofstream file(filename);
+
+    if (!file.is_open()) {
+        cerr << "Failed to open the file for writing!" << endl;
+        return;
+    }
+
+    for (const auto& entry : linkedLists) {
+        file << entry.first; 
+        Node* current = entry.second.getHead(); 
+        while (current != nullptr) {
+            file << " " << current->data; 
+            current = current->next;
+        }
+        file << endl; 
+    }
+
+    file.close();
+    cout << "Data written back to " << filename << endl;
+}
+
 // Function to check if a string is valid (contains only alphabetic characters and spaces)
 bool isValidStreetName(const string& str) {
     for (char c : str) {
@@ -75,14 +97,37 @@ void userInteractionLoop(map<string, linkedList>& linkedLists) {
     bool running = true;
 
     while (running) {
-        // Ask the user for a street name
         string choice;
-        cout << "Which street would you like to view? Type \"exit\" to quit the program or \"all\" to view all data. \nEnter a full lowercase street name: ";
+        cout << "Would you like to view all data, zoom in on a street, insert data, or exit? (all/street name/insert/exit): ";
         getline(cin, choice);
 
-        if (choice == "exit" || choice == "Exit") {
+        if (choice == "exit") {
             running = false;
             cout << "Exiting program." << endl;
+        } else if (choice == "insert") {
+            string streetName;
+            cout << "Enter the street name: ";
+            getline(cin, streetName);
+
+            // Validate street name
+            if (!isValidStreetName(streetName)) {
+                cout << "Invalid street name." << endl;
+                continue;
+            }
+
+            int treeCount;
+            cout << "Enter the number of trees: ";
+            cin >> treeCount;
+            cin.ignore(); // Clear newline character
+
+            // Insert data into the linked list
+            if (linkedLists.find(streetName) == linkedLists.end()) {
+                linkedLists[streetName] = linkedList();
+            }
+            linkedLists[streetName].insert(treeCount);
+
+            cout << "Data inserted for " << streetName << "." << endl;
+
         } else if (choice == "all" || choice == "All") {
             // Iterate over the map and print each street's linked list
             for (const auto& entry : linkedLists) {
@@ -114,11 +159,13 @@ int main() {
 
     ifstream file("TreeData.dat");
 
-    writeDataFile(file, linkedLists);
+    writeFromDataFile(file, linkedLists);
 
     file.close();
 
     userInteractionLoop(linkedLists);
+
+    writeBackToFile(linkedLists, "TreeData.dat");
 
     return 0;
 }

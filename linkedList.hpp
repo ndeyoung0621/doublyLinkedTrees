@@ -18,6 +18,8 @@ class linkedList {
     public:
         int size;
         linkedList() noexcept;
+        public:
+        Node* getHead() const;  
         void insert(int value);
         void printList() const;
         void deleteNode(Node* nodeToDelete);

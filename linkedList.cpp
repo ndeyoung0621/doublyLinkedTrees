@@ -48,6 +48,10 @@ void linkedList::printList() const {
     cout << endl;
 }
 
+Node* linkedList::getHead() const {
+    return head;
+}
+
 void linkedList::navigateList() const {
     if (!head) {
         cout << "The list is empty." << endl;
